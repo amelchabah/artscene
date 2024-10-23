@@ -17,10 +17,11 @@ void main() {
 
     // Appliquer la texture canvas lors du survol
     vec4 canvasTexture = texture2D(uCanvasTexture, uv);
-    vec4 blueOverlay = vec4(0.,0.,1.,1.);
+    // vec4 blueOverlay = vec4(0.,0.,1.,1.);
+    vec4 redOverlay = vec4(0.,0.5,0.6,1.);
 
     // Mélanger les couleurs lors du hover
-    vec4 finalColor = mix(color, blueOverlay * color, canvasTexture.r);
+    vec4 finalColor = mix(color, redOverlay * color, canvasTexture.r);
 
     gl_FragColor = finalColor;
 }

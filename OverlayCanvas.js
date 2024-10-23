@@ -61,8 +61,15 @@ export class OverlayCanvas {
         const y = this.height * (1 - uv.y);
 
         this.ctx.beginPath()
-        this.ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-        this.ctx.arc(x, y, 10, 0, Math.PI * 2);
+        // this.ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+        // this.ctx.arc(x, y, 30, 0, Math.PI * 2);
+        // gradient arc blend
+
+        const gradient = this.ctx.createRadialGradient(x, y, 0, x, y, 30);
+        gradient.addColorStop(0, 'rgba(255, 0, 0, 1)');
+        gradient.addColorStop(1, 'rgba(255, 0, 0, 0)');
+        this.ctx.fillStyle = gradient;
+        this.ctx.arc(x, y, 30, 0, Math.PI * 2);
         this.ctx.fill();
         this.ctx.closePath()
 
