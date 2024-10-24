@@ -26,7 +26,7 @@ document.body.appendChild(renderer.domElement);
 const uniforms = {
     uTime: { value: 0 },
     uTexture: { value: koiTexture },
-    uShadowOpacity: { value: 0.3 },  // Opacité de l'ombre (0 = invisible, 1 = totalement opaque)
+    uShadowOpacity: { value: 0.2 },  // Opacité de l'ombre (0 = invisible, 1 = totalement opaque)
     uShadowOffset: { value: new THREE.Vector2(0.05, 0.01) }  // Décalage de l'ombre
 };
 
@@ -119,12 +119,12 @@ function animate() {
     bgUniforms2.uTime.value = elapsedTime;
 
     // Effet de parallaxe
-    bgPlane.position.x = mouseX * 0.3;
-    bgPlane.position.y = mouseY * 0.3;
+    bgPlane.position.x = mouseX * 0.2;
+    bgPlane.position.y = mouseY * 0.2;
     plane.position.x = mouseX * 0.4;
     plane.position.y = mouseY * 0.4;
-    bgPlane2.position.x = mouseX * 0.3;
-    bgPlane2.position.y = mouseY * 0.3;
+    bgPlane2.position.x = mouseX * 0.2;
+    bgPlane2.position.y = mouseY * 0.2;
 
     // Rendu de la scène
     renderer.render(scene, camera);

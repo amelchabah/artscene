@@ -3,18 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>🍣</text></svg>"></link>
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>🍣</text></svg>">
+  </link>
   <title>threejs koi</title>
   <style>
     body {
       margin: 0;
-      /* background-color: rgb(203, 197, 187); */
+      background-color: white;
+      font-family: serif;
+      transition: all 0.5s ease;
     }
+
     #drawingCanvas {
       opacity: 0;
       pointer-events: none;
     }
 
+    button {
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 10px;
+      z-index: 3;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    #playButton {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+    }
+
+    #modeButton {
+      position: fixed;
+      top: 50px;
+      right: 10px;
+    }
   </style>
   <script type="importmap">
         {
@@ -28,7 +54,65 @@
 </head>
 
 <body>
+
+
+  <!-- audio music.mp3 playing button and audio element -->
+  <button id="playButton" title="play/pause">🪕</button>
+  <audio id="audio" src="./music.mp3" loop></audio>
+
+  <!-- light/dark mode button -->
+  <button id="modeButton" title="dark/light mode">🌞</button>
+
+
   <script type="module" src="./main.js"></script>
+  <script>
+    const playButton = document.getElementById('playButton');
+    const audio = document.getElementById('audio');
+    // volume low
+
+    audio.volume = 0.3;
+    playButton.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+        playButton.textContent = '🌊';
+      } else {
+        audio.pause();
+        playButton.textContent = '🪕';
+      }
+    });
+
+    const modeButton = document.getElementById('modeButton');
+    modeButton.addEventListener('click', () => {
+      if (document.body.style.backgroundColor === 'white') {
+        document.body.style.backgroundColor = '#171411';
+        modeButton.textContent = '🌚';
+
+        // add filter to the whole body
+
+        // document.body.style.filter = 'invert(1)';
+
+        // only to all <canvas> elements, including the one created by three.js
+
+        document.querySelectorAll('canvas').forEach(canvas => {
+          canvas.style.filter = 'invert(1) hue-rotate(180deg)';
+        });
+      } else {
+        document.body.style.backgroundColor = 'white';
+        modeButton.textContent = '🌞';
+
+        // remove filter from the whole body
+
+        // document.body.style.filter = 'none';
+
+        // only to all <canvas> elements, including the one created by three.js
+
+        document.querySelectorAll('canvas').forEach(canvas => {
+          canvas.style.filter = 'none';
+        });
+
+      }
+    });
+  </script>
 </body>
 
 </html>
