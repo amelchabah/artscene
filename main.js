@@ -1,27 +1,28 @@
 import * as THREE from 'three';
-import vert from './glsl/fish_v.js';  
-import frag from './glsl/fish_f.js';  
-import bgVert from './glsl/bgkoi_v.js';  
-import bgFrag from './glsl/bgkoi_f.js';  
+import vert from './glsl/fish_v.js';
+import frag from './glsl/fish_f.js';
+import bgVert from './glsl/bgkoi_v.js';
+import bgFrag from './glsl/bgkoi_f.js';
 import { OverlayCanvas } from './OverlayCanvas.js';
 
 // Charger les textures
 const textureLoader = new THREE.TextureLoader();
-const koiTexture = textureLoader.load('koi3.png');  
-const bgTexture = textureLoader.load('bg.jpg'); 
+const koiTexture = textureLoader.load('koi3.png');
+const bgTexture = textureLoader.load('bg.jpg');
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
-// renderer.setAnimationLoop(animate);
 document.body.appendChild(renderer.domElement);
 
 // Uniforms pour les shaders
 const uniforms = {
-    uTime: { value: 0 },  
-    uTexture: { value: koiTexture }  
+    uTime: { value: 0 },
+    uTexture: { value: koiTexture },
+    uShadowOpacity: { value: 0.05 },  // Opacité de l'ombre (0 = invisible, 1 = totalement opaque)
+    uShadowOffset: { value: new THREE.Vector2(0.05, 0.05) }  // Décalage de l'ombre
 };
 
 // Créer le matériau pour le poisson
@@ -29,14 +30,13 @@ const material = new THREE.ShaderMaterial({
     vertexShader: vert,
     fragmentShader: frag,
     uniforms: uniforms,
-    transparent: true  
+    transparent: true
 });
 
 // Créer un plan pour afficher le poisson
 const planeGeometry = new THREE.PlaneGeometry(3, 3);
 const plane = new THREE.Mesh(planeGeometry, material);
 scene.add(plane);
-
 
 // Créer un grand plan pour le fond
 const bgSize = { x: 20, y: 10 }
@@ -47,7 +47,7 @@ const overlayCanvas = new OverlayCanvas({
 });
 
 const bgUniforms = {
-    uTime: { value: 0 },  
+    uTime: { value: 0 },
     uTexture: { value: bgTexture },
     uCanvasTexture: { value: overlayCanvas.canvasTexture }
 };
@@ -57,12 +57,12 @@ const bgMaterial = new THREE.ShaderMaterial({
     vertexShader: bgVert,
     fragmentShader: bgFrag,
     uniforms: bgUniforms,
-    transparent: true  
+    transparent: true
 });
 
 const bgPlaneGeometry = new THREE.PlaneGeometry(bgSize.x, bgSize.y);
 const bgPlane = new THREE.Mesh(bgPlaneGeometry, bgMaterial);
-bgPlane.position.z = -5;  
+bgPlane.position.z = -5;
 scene.add(bgPlane);
 
 overlayCanvas.setPlane(bgPlane);
@@ -79,7 +79,6 @@ document.addEventListener('mousemove', (event) => {
     mouseY = -(event.clientY / window.innerHeight) * 2 + 1; // entre -1 et 1
 });
 
-
 // Animation
 let startTime = performance.now();
 
@@ -94,10 +93,10 @@ function animate() {
     bgUniforms.uTime.value = elapsedTime;
 
     // Effet de parallaxe
-    bgPlane.position.x = mouseX * 0.3; 
-    bgPlane.position.y = mouseY * 0.3; 
-    plane.position.x = mouseX * 0.4; 
-    plane.position.y = mouseY * 0.4; 
+    bgPlane.position.x = mouseX * 0.3;
+    bgPlane.position.y = mouseY * 0.3;
+    plane.position.x = mouseX * 0.4;
+    plane.position.y = mouseY * 0.4;
 
     // Rendu de la scène
     renderer.render(scene, camera);

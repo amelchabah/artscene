@@ -5,6 +5,7 @@ export class OverlayCanvas {
     rayDirection = new THREE.Vector3(0, 0, 0);
     pointer = { x: 0, y: 0 };
     positions = []; // Tableau pour stocker les positions UV
+    brushImage = new Image();
 
     constructor({ bgSize, camera }) {
         this.width = bgSize.x * 20;
@@ -24,6 +25,9 @@ export class OverlayCanvas {
 
         this.canvasTexture = new THREE.CanvasTexture(this.canvas);
         this.camera = camera;
+
+        // Charger l'image brushtexture.png
+        this.brushImage.src = 'brushtexture2.png';
 
         this.createRaycaster();
         this.fillCanvas();
@@ -61,26 +65,18 @@ export class OverlayCanvas {
         this.ctx.clearRect(0, 0, this.width, this.height);
         this.fillCanvas(); // Remplir à nouveau le fond
 
-        // Pour chaque position stockée, dessiner un point
+        // Pour chaque position stockée, dessiner l'image du pinceau
         this.positions.forEach((pos, index) => {
             const x = this.width * pos.x;
             const y = this.height * (1 - pos.y);
 
             const alpha = (index + 1) / this.positions.length; // Alpha pour l'effet de traînée
-            this.ctx.beginPath();
-            // this.ctx.fillStyle = `rgba(255, 0, 0, ${alpha})`; // Ajuste l'opacité pour un effet de traînée
 
-            // effet gradient
-            const gradient = this.ctx.createRadialGradient(x, y, 0, x, y, 30);
-            gradient.addColorStop(0, `rgba(255, 0, 0, ${alpha})`);
-            gradient.addColorStop(1, 'rgba(255, 0, 0, 0)');
-            this.ctx.fillStyle = gradient;
+            this.ctx.globalAlpha = alpha; // Ajuster la transparence pour l'effet de traînée
+            const size = 50; // Taille du pinceau
 
-            // this.ctx.fillStyle = alpha;
-    
-            this.ctx.arc(x, y, 50, 0, Math.PI * 2);
-            this.ctx.fill();
-            this.ctx.closePath();
+            // Dessiner l'image du pinceau à la position actuelle
+            this.ctx.drawImage(this.brushImage, x - size / 2, y - size / 2, size, size);
         });
 
         // Signaler que la texture a besoin d'être mise à jour
