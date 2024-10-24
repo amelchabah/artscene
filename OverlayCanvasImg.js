@@ -27,7 +27,7 @@ export class OverlayCanvas {
         this.camera = camera;
 
         // Charger l'image brushtexture.png
-        this.brushImage.src = 'brushtexture2.png';
+        this.brushImage.src = 'brushtexture.png';
 
         this.createRaycaster();
         this.fillCanvas();

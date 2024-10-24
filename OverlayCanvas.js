@@ -44,7 +44,7 @@ export class OverlayCanvas {
 
     // Remplissage initial de la toile
     fillCanvas() {
-        this.ctx.fillStyle = 'rgba(0, 0, 255, 1)';
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 1)';
         this.ctx.fillRect(0, 0, this.width, this.height);
     }
 
@@ -87,6 +87,7 @@ export class OverlayCanvas {
         this.canvasTexture.needsUpdate = true;
     };
 
+
     // Vérifier l'intersection entre le raycaster et le plan
     checkIntersection = () => {
         if (!this.plane) return;
@@ -104,6 +105,23 @@ export class OverlayCanvas {
             }
 
             this.drawOnCanvas(); // Redessiner la toile avec les nouvelles positions
+        } else {
+            // Efface ton canvas
+            // this.ctx.clearRect(0, 0, this.width, this.height);
+            let repeatCount = 0;
+            const clear = () => {
+                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                this.ctx.fillRect(0, 0, this.width, this.height);
+
+                repeatCount++;
+                this.canvasTexture.needsUpdate = true;
+
+                if(repeatCount < 10) {
+                    requestAnimationFrame(clear);
+                    this.positions = [];
+                }
+            }
+            clear()
         }
     };
 }
