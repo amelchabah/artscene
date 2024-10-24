@@ -71,14 +71,14 @@ export class OverlayCanvas {
             // this.ctx.fillStyle = `rgba(255, 0, 0, ${alpha})`; // Ajuste l'opacité pour un effet de traînée
 
             // effet gradient
-            const gradient = this.ctx.createRadialGradient(x, y, 0, x, y, 30);
+            const gradient = this.ctx.createRadialGradient(x, y, 0, x, y, 80);
             gradient.addColorStop(0, `rgba(255, 0, 0, ${alpha})`);
             gradient.addColorStop(1, 'rgba(255, 0, 0, 0)');
             this.ctx.fillStyle = gradient;
 
             // this.ctx.fillStyle = alpha;
     
-            this.ctx.arc(x, y, 50, 0, Math.PI * 2);
+            this.ctx.arc(x, y, 80, 0, Math.PI * 2);
             this.ctx.fill();
             this.ctx.closePath();
         });
