@@ -172,7 +172,7 @@ updateWaterTexture();
 // Écouteur pour le changement de thème
 modeButton.addEventListener('click', () => {
     if (document.body.style.backgroundColor === 'white') {
-        document.body.style.backgroundColor = '#090e14';
+        document.body.style.backgroundColor = '#010203';
         modeButton.textContent = '🌚';
         localStorage.setItem('theme', 'dark');
     } else {
