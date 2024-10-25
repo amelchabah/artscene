@@ -9,7 +9,7 @@ import { OverlayCanvas } from './OverlayCanvas.js';
 
 // Charger les textures
 const textureLoader = new THREE.TextureLoader();
-const koiTexture = textureLoader.load('koi3.png');
+const koiTexture = textureLoader.load('koi3bis.png');
 // const bgTexture = textureLoader.load('bg.jpg');
 
 const bgTexture = localStorage.getItem('theme') === 'light' ? textureLoader.load('bg.jpg') : textureLoader.load('bgnight.jpg');
@@ -34,7 +34,7 @@ document.body.appendChild(renderer.domElement);
 const uniforms = {
     uTime: { value: 0 },
     uTexture: { value: koiTexture },
-    uShadowOpacity: { value: 0.2 },  // Opacité de l'ombre (0 = invisible, 1 = totalement opaque)
+    uShadowOpacity: { value: 0.4 },  // Opacité de l'ombre (0 = invisible, 1 = totalement opaque)
     uShadowOffset: { value: new THREE.Vector2(0.05, 0.01) }  // Décalage de l'ombre
 };
 
@@ -172,7 +172,7 @@ updateWaterTexture();
 // Écouteur pour le changement de thème
 modeButton.addEventListener('click', () => {
     if (document.body.style.backgroundColor === 'white') {
-        document.body.style.backgroundColor = '#152229';
+        document.body.style.backgroundColor = '#090e14';
         modeButton.textContent = '🌚';
         localStorage.setItem('theme', 'dark');
     } else {
