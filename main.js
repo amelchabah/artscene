@@ -14,7 +14,7 @@ const koiTexture = textureLoader.load('koi3bis.png');
 
 const bgTexture = localStorage.getItem('theme') === 'light' ? textureLoader.load('bg.jpg') : textureLoader.load('bgnight.jpg');
 const bgTexture2 = localStorage.getItem('theme') === 'light' ? textureLoader.load('bg2.png') : textureLoader.load('bg2night.png');
-document.body.style.background = localStorage.getItem('theme') === 'light' ? 'white' : '#010203';
+document.body.style.background = localStorage.getItem('theme') === 'light' ? 'white' : '#0d1014';
 // const bgTexture2 = textureLoader.load('bg2.png');
 
 // if localstorage theme is set to light, waterTexture is set to water.jpg, otherwise it's set to water2.jpg
@@ -215,7 +215,7 @@ updateWaterTexture();
 // Écouteur pour le changement de thème
 modeButton.addEventListener('click', () => {
     if (document.body.style.backgroundColor === 'white') {
-        document.body.style.backgroundColor = '#010203';
+        document.body.style.backgroundColor = '#0d1014';
         modeButton.textContent = '🌚';
         localStorage.setItem('theme', 'dark');
     } else {
