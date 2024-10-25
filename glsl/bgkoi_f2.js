@@ -1,6 +1,7 @@
 const background_chien2 = /* glsl */ `
 uniform sampler2D uTexture;  // Texture de fond (bg.jpg)
 uniform float uTime;  // Temps pour animer
+uniform float uLightModeOffset;
 varying vec2 vUv;  // Coordonnées UV venant du vertex shader
 uniform sampler2D uCanvasTexture; // Texture de l'effet de survol
 uniform sampler2D uWaterTexture;
@@ -23,8 +24,9 @@ void main() {
     // vec4 blueOverlay = vec4(0.,0.,1.,1.);
     vec4 redOverlay = vec4(0.2,0.2,0.2,1.);
 
+
     // Mélanger les couleurs lors du hover
-    vec4 finalColor = mix(color, waterTexture * color, canvasTexture.r);
+    vec4 finalColor = mix(color, waterTexture * color * uLightModeOffset, canvasTexture.r);
 
     gl_FragColor = finalColor;
 }

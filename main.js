@@ -10,10 +10,18 @@ import { OverlayCanvas } from './OverlayCanvas.js';
 // Charger les textures
 const textureLoader = new THREE.TextureLoader();
 const koiTexture = textureLoader.load('koi3.png');
-const bgTexture = textureLoader.load('bg.jpg');
-const bgTexture2 = textureLoader.load('bg2.png');
-const waterTexture = textureLoader.load('water.jpg');
-const skyTexture = textureLoader.load('sky.jpg');
+// const bgTexture = textureLoader.load('bg.jpg');
+
+const bgTexture = localStorage.getItem('theme') === 'light' ? textureLoader.load('bg.jpg') : textureLoader.load('bgnight.jpg');
+const bgTexture2 = localStorage.getItem('theme') === 'light' ? textureLoader.load('bg2.png') : textureLoader.load('bg2night.png');
+document.body.style.background = localStorage.getItem('theme') === 'light' ? 'white' : '#152229';
+// const bgTexture2 = textureLoader.load('bg2.png');
+
+// if localstorage theme is set to light, waterTexture is set to water.jpg, otherwise it's set to water2.jpg
+// const waterTexture = textureLoader.load('water.jpg');
+
+const waterTexture = localStorage.getItem('theme') === 'light' ? textureLoader.load('water.jpg') : textureLoader.load('water2.jpg');
+const skyTexture = localStorage.getItem('theme') === 'light' ? textureLoader.load('sky.jpg') : textureLoader.load('sky2.jpg');
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -55,14 +63,16 @@ const bgUniforms = {
     uTime: { value: 0 },
     uTexture: { value: bgTexture },
     uCanvasTexture: { value: overlayCanvas.canvasTexture },
-    uSkyTexture: { value: skyTexture }
+    uSkyTexture: { value: skyTexture },
+    uLightModeOffset: { value: 0 }
 };
 
 const bgUniforms2 = {
     uTime: { value: 0 },
     uTexture: { value: bgTexture2 },
     uWaterTexture: { value: waterTexture },
-    uCanvasTexture: { value: overlayCanvas.canvasTexture }
+    uCanvasTexture: { value: overlayCanvas.canvasTexture },
+    uLightModeOffset: { value: 0 }
 };
 
 // Créer le matériau pour le background
@@ -132,3 +142,46 @@ function animate() {
 }
 
 animate();
+
+
+
+const modeButton = document.getElementById('modeButton');
+if(!localStorage.getItem('theme')) {
+    localStorage.setItem('theme', 'light');
+}
+
+// Fonction pour mettre à jour la texture de l'eau
+function updateWaterTexture() {
+    const theme = localStorage.getItem('theme');
+    const newWaterTexture = theme === 'light' ? textureLoader.load('water.jpg') : textureLoader.load('water2.jpg');
+    const newSkyTexture = theme === 'light' ? textureLoader.load('sky.jpg') : textureLoader.load('sky2.jpg');
+    const newBgTexture = theme === 'light' ? textureLoader.load('bg.jpg') : textureLoader.load('bgnight.jpg');
+    const newBgTexture2 = theme === 'light' ? textureLoader.load('bg2.png') : textureLoader.load('bg2night.png');
+
+    bgUniforms2.uLightModeOffset.value = theme === 'light' ? 1 : 4.;
+    bgUniforms.uLightModeOffset.value = theme === 'light' ? 1 : 4.;
+    bgUniforms2.uWaterTexture.value = newWaterTexture; // Mise à jour de l'uniforme
+    bgUniforms.uSkyTexture.value = newSkyTexture;
+    bgTexture.copy(newBgTexture);
+    bgTexture2.copy(newBgTexture2);
+}
+
+// Initialisation de la texture de l'eau au chargement
+updateWaterTexture();
+
+// Écouteur pour le changement de thème
+modeButton.addEventListener('click', () => {
+    if (document.body.style.backgroundColor === 'white') {
+        document.body.style.backgroundColor = '#152229';
+        modeButton.textContent = '🌚';
+        localStorage.setItem('theme', 'dark');
+    } else {
+        document.body.style.backgroundColor = 'white';
+        modeButton.textContent = '🌞';
+        localStorage.setItem('theme', 'light');
+    }
+
+    // Recharger la texture de l'eau en fonction du thème actuel
+    updateWaterTexture();
+});
+

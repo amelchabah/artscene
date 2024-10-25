@@ -73,25 +73,6 @@
       }
     });
 
-    const modeButton = document.getElementById('modeButton');
-    modeButton.addEventListener('click', () => {
-      if (document.body.style.backgroundColor === 'white') {
-        document.body.style.backgroundColor = '#171411';
-        modeButton.textContent = '🌚';
-
-        document.querySelectorAll('canvas').forEach(canvas => {
-          canvas.style.filter = 'invert(1) hue-rotate(180deg)';
-        });
-      } else {
-        document.body.style.backgroundColor = 'white';
-        modeButton.textContent = '🌞';
-
-        document.querySelectorAll('canvas').forEach(canvas => {
-          canvas.style.filter = 'none';
-        });
-
-      }
-    });
   </script>
 </body>
 
