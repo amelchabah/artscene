@@ -54,22 +54,14 @@
 </head>
 
 <body>
-
-
-  <!-- audio music.mp3 playing button and audio element -->
   <button id="playButton" title="play/pause">🪕</button>
   <audio id="audio" src="./music.mp3" loop></audio>
-
-  <!-- light/dark mode button -->
   <button id="modeButton" title="dark/light mode">🌞</button>
-
 
   <script type="module" src="./main.js"></script>
   <script>
     const playButton = document.getElementById('playButton');
     const audio = document.getElementById('audio');
-    // volume low
-
     audio.volume = 0.3;
     playButton.addEventListener('click', () => {
       if (audio.paused) {
@@ -87,24 +79,12 @@
         document.body.style.backgroundColor = '#171411';
         modeButton.textContent = '🌚';
 
-        // add filter to the whole body
-
-        // document.body.style.filter = 'invert(1)';
-
-        // only to all <canvas> elements, including the one created by three.js
-
         document.querySelectorAll('canvas').forEach(canvas => {
           canvas.style.filter = 'invert(1) hue-rotate(180deg)';
         });
       } else {
         document.body.style.backgroundColor = 'white';
         modeButton.textContent = '🌞';
-
-        // remove filter from the whole body
-
-        // document.body.style.filter = 'none';
-
-        // only to all <canvas> elements, including the one created by three.js
 
         document.querySelectorAll('canvas').forEach(canvas => {
           canvas.style.filter = 'none';
