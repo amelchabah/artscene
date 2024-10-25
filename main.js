@@ -14,7 +14,7 @@ const koiTexture = textureLoader.load('koi3bis.png');
 
 const bgTexture = localStorage.getItem('theme') === 'light' ? textureLoader.load('bg.jpg') : textureLoader.load('bgnight.jpg');
 const bgTexture2 = localStorage.getItem('theme') === 'light' ? textureLoader.load('bg2.png') : textureLoader.load('bg2night.png');
-document.body.style.background = localStorage.getItem('theme') === 'light' ? 'white' : '#152229';
+document.body.style.background = localStorage.getItem('theme') === 'light' ? 'white' : '#010203';
 // const bgTexture2 = textureLoader.load('bg2.png');
 
 // if localstorage theme is set to light, waterTexture is set to water.jpg, otherwise it's set to water2.jpg
@@ -34,6 +34,7 @@ document.body.appendChild(renderer.domElement);
 const uniforms = {
     uTime: { value: 0 },
     uTexture: { value: koiTexture },
+    uOpacity : { value: 0. },
     uShadowOpacity: { value: 0.4 },  // Opacité de l'ombre (0 = invisible, 1 = totalement opaque)
     uShadowOffset: { value: new THREE.Vector2(0.05, 0.01) }  // Décalage de l'ombre
 };
@@ -141,6 +142,48 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
+// Initialisation de l'animation de largeur avec GSAP au lancement de la page
+function startBgAnimation() {
+    gsap.fromTo(
+        [bgPlane.scale, bgPlane2.scale], // Les objets à animer
+        { x: 0 }, // Valeur de départ
+        {
+            x: 1, // Valeur cible (100% de la largeur)
+            duration: 4.5, // Durée de l'animation en secondes
+            ease: 'power2.out' // Effet de douceur
+        }
+    );
+}
+
+function startKoiAnimation() {
+    gsap.fromTo(
+        plane.material.uniforms.uShadowOpacity,
+        { value: 0 },
+        {
+            value: 0.4,
+            duration: 2.5,
+            ease: 'power2.out',
+            delay: 5.5,
+        }
+    );
+}
+
+function startKoi2Animation() {
+    gsap.fromTo(
+        plane.material.uniforms.uOpacity,
+        { value: 0 },
+        {
+            value: 1,
+            duration: 1.5,
+            ease: 'power2.out',
+            delay: 4.5,
+        }
+    );
+}
+
+startBgAnimation(); // Lancer l'animation au chargement
+startKoiAnimation();
+startKoi2Animation();
 animate();
 
 
